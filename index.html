@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DOS HRIS</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+  <div id="crt-overlay" aria-hidden="true"></div>
+
+  <header class="bar" role="banner">
+    <div class="bar-left">DOS-HRIS v1.0</div>
+    <div class="bar-right" id="clock">00:00</div>
+  </header>
+
+  <main id="screen" role="main" aria-live="polite">
+    <!-- Login screen -->
+    <section id="view-login" class="view active" aria-labelledby="login-title">
+      <div class="window">
+        <div class="window-title" id="login-title">User Login</div>
+        <div class="window-body">
+          <form id="login-form" autocomplete="off" aria-describedby="login-help">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" required autofocus/>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required/>
+            <div class="help" id="login-help">Press Enter to sign in. Esc clears fields.</div>
+            <div class="actions">
+              <button type="submit" class="btn">Sign In</button>
+              <button type="button" class="btn ghost" id="clear-login">Clear</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main menu -->
+    <section id="view-menu" class="view" aria-labelledby="menu-title">
+      <div class="window">
+        <div class="window-title" id="menu-title">Main Menu</div>
+        <div class="window-body">
+          <ul id="menu-list" class="menu" role="menu" tabindex="0" aria-label="Main menu">
+            <li role="menuitem" data-target="view-directory"><span class="hotkey">E</span>mployee Directory</li>
+            <li role="menuitem" data-target="view-leave"><span class="hotkey">L</span>eave Requests</li>
+            <li role="menuitem" data-target="view-payroll"><span class="hotkey">P</span>ayroll Stubs</li>
+            <li role="menuitem" data-target="view-settings"><span class="hotkey">S</span>ettings</li>
+            <li role="menuitem" data-target="view-about"><span class="hotkey">A</span>bout</li>
+            <li role="menuitem" data-target="logout"><span class="hotkey">Q</span>uit (Logout)</li>
+          </ul>
+          <div class="help">Use ↑ ↓ and Enter. Alt+E/L/P/S/A/Q jumps to items.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Employee directory -->
+    <section id="view-directory" class="view" aria-labelledby="dir-title">
+      <div class="window">
+        <div class="window-title" id="dir-title">Employee Directory</div>
+        <div class="window-body">
+          <div class="toolbar">
+            <label for="dir-search">Search:</label>
+            <input id="dir-search" type="text" placeholder="Name, ID, Dept"/>
+            <button class="btn" id="dir-export">Export</button>
+            <button class="btn ghost" data-back>Back</button>
+          </div>
+          <div class="table-wrap" role="region" aria-label="Directory table">
+            <table class="table" aria-describedby="dir-help">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Name</th><th>Dept</th><th>Title</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="dir-rows"></tbody>
+            </table>
+          </div>
+          <div class="help" id="dir-help">Type to filter. Enter to open record, Esc to clear.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leave requests -->
+    <section id="view-leave" class="view" aria-labelledby="leave-title">
+      <div class="window">
+        <div class="window-title" id="leave-title">Leave Requests</div>
+        <div class="window-body">
+          <form id="leave-form" class="form-grid">
+            <label for="leave-type">Type</label>
+            <select id="leave-type" required>
+              <option value="">Select…</option>
+              <option>Vacation</option>
+              <option>Personal</option>
+              <option>Sick</option>
+              <option>Unpaid</option>
+            </select>
+            <label for="leave-start">Start</label>
+            <input id="leave-start" type="date" required/>
+            <label for="leave-end">End</label>
+            <input id="leave-end" type="date" required/>
+            <label for="leave-notes">Notes</label>
+            <textarea id="leave-notes" rows="3" placeholder="Optional"></textarea>
+            <div class="actions">
+              <button class="btn" type="submit">Submit</button>
+              <button class="btn ghost" type="reset">Reset</button>
+              <button class="btn ghost" data-back>Back</button>
+            </div>
+          </form>
+          <div class="list" aria-label="Recent leave requests">
+            <h3>Recent</h3>
+            <ul id="leave-list"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payroll stubs -->
+    <section id="view-payroll" class="view" aria-labelledby="pay-title">
+      <div class="window">
+        <div class="window-title" id="pay-title">Payroll Stubs</div>
+        <div class="window-body">
+          <div class="toolbar">
+            <label for="pay-period">Period</label>
+            <select id="pay-period"></select>
+            <button class="btn" id="pay-print">Print</button>
+            <button class="btn ghost" data-back>Back</button>
+          </div>
+          <pre class="stub" id="pay-stub" aria-label="Payroll stub"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section id="view-settings" class="view" aria-labelledby="set-title">
+      <div class="window">
+        <div class="window-title" id="set-title">Settings</div>
+        <div class="window-body">
+          <div class="grid-2">
+            <label for="theme">Theme</label>
+            <select id="theme">
+              <option value="green">Green</option>
+              <option value="amber">Amber</option>
+              <option value="gray">Gray</option>
+            </select>
+            <label for="scanlines">CRT Scanlines</label>
+            <input id="scanlines" type="checkbox" checked/>
+            <label for="sound">Keyclick Sound</label>
+            <input id="sound" type="checkbox"/>
+          </div>
+          <div class="actions">
+            <button class="btn" id="save-settings">Save</button>
+            <button class="btn ghost" data-back>Back</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="view-about" class="view" aria-labelledby="about-title">
+      <div class="window">
+        <div class="window-title" id="about-title">About</div>
+        <div class="window-body">
+          <pre class="about">
+DOS-HRIS v1.0
+Copyright (C)
+
+A retro-styled HRIS demo.
+Keyboard shortcuts: ↑ ↓ Enter Esc Alt+E/L/P/S/A/Q
+          </pre>
+          <div class="actions">
+            <button class="btn ghost" data-back>Back</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="window">
+        <div class="window-title" id="modal-title">Confirm</div>
+        <div class="window-body">
+          <p id="modal-message">Are you sure?</p>
+          <div class="actions">
+            <button class="btn" id="modal-ok">OK</button>
+            <button class="btn ghost" id="modal-cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bar" role="contentinfo">
+    <div class="bar-left">© DOS-HRIS</div>
+    <div class="bar-right">ALT+Key for quick access</div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
