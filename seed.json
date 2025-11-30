@@ -1,0 +1,15 @@
+{
+  "employees": [
+    { "id": "E005", "name": "Jordan Blake", "dept": "IT", "title": "SysAdmin", "status": "Active" },
+    { "id": "E006", "name": "Sofia Russo", "dept": "HR", "title": "Recruiter", "status": "Active" }
+  ],
+  "payroll": [
+    { "period": "2025-12-15", "lines": [
+      "PAY STUB: 2025-12-15",
+      "Employee: Jordan Blake (E005)",
+      "Gross: $5,800.00",
+      "Tax:   $1,160.00",
+      "Net:   $4,640.00"
+    ]}
+  ]
+}
