@@ -20,13 +20,3 @@ Payroll stubs: View and print pay stubs for selected periods.
 Settings: Switch themes (green, amber, gray), toggle CRT scanlines, and sound effects.
 
 About screen: Retro credits and keyboard shortcut guide.
-
-
-dos-hris/
-├─ index.html        # Main entry point
-├─ css/
-│  └─ style.css      # DOS-style theme
-├─ js/
-│  └─ app.js         # Navigation & state logic
-└─ data/
-   └─ seed.json      # Example employee & payroll data
